@@ -6,6 +6,7 @@ library(gdata)
 library(readxl)
 library(openxlsx)
 
+print("done loading")
 
 myDirPrefix <- "/pfs/"
 args = commandArgs(trailingOnly=TRUE)
