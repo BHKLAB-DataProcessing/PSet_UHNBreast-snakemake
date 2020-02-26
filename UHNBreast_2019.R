@@ -421,12 +421,12 @@ rnaseq.sampleinfo$cell.id <- NULL
 for (r in 1:length(tool_path)){
   print(tool_path[r])
   if (length(grep(pattern = 'Kallisto', x = tool_path[r])) > 0){
-    tdir = "download_uhn_rnaseqkallisto/Kallisto/"
-    tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])	  
+    tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])
+    tdir = paste0("uhn_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")	  
     rnatool="kallisto"	  
   } else {
-    tdir = "download_uhn_rnaseqsalmon/Salmon/"
     tool <- sub("(_[^_]+)_.*", "\\1", tool_path[r])
+    tdir = paste0("uhn_rnaseq_",gsub(".","_",tolower(tool), fixed = T), "/",  tool, "/", tool, "/")
     rnatool="salmon"	  
   }
   
