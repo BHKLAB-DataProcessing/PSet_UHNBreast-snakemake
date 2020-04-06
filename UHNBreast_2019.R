@@ -72,10 +72,10 @@ for (cell in dupCell){
 }
 rownames(cellline_info) <- cellline_info$cellid
 cellline_info$tissueid <- curationTissue$unique.tissueid[match(cellline_info$cellid, rownames(curationTissue))]
-#cellline_info["HCT 116","tissueid"] <- "large_intestine"
-#cellline_info["DU145","tissueid"] <- "prostate"
-#cellline_info[83,"cellid"] <- "HCT 116"
-#cellline_info[84,"cellid"] <- "DU145"
+cellline_info["HCT 116","tissueid"] <- "large_intestine"
+cellline_info["DU145","tissueid"] <- "prostate"
+cellline_info[83,"cellid"] <- "HCT 116"
+cellline_info[84,"cellid"] <- "DU145"
 
 ###drug info###
 drug_info <- data.frame("drugid"=curationDrug$unique.drugid)
@@ -513,20 +513,21 @@ cellline_info$CellLine.Type <- cell_type
 metastatic <- cell_all$Metastatic[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$Metastatic <- metastatic	
 
-#add missing cells to cell_info		 
-cellnall <- unionList(rownames(cellline_info),rnaseq$rnaseq$cellid, sensitivity$info$cellid)
-newcells <- setdiff(cellnall, rownames(cellline_info))
-newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellline_info))
-# newRows <- cell.info[newcells,]
+#add missing cells to cell_info	
+		 
+#cellnall <- unionList(rownames(cellline_info),rnaseq$rnaseq$cellid, sensitivity$info$cellid)
+#newcells <- setdiff(cellnall, rownames(cellline_info))
+#newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellline_info))
 
-rownames(newRows) <- newcells
-colnames(newRows) <- colnames(cellline_info)
-newRows[,"cellid"] <- newcells
 
-cellline_info <- rbind(cellline_info, newRows)
+#rownames(newRows) <- newcells
+#colnames(newRows) <- colnames(cellline_info)
+#newRows[,"cellid"] <- newcells
+
+#cellline_info <- rbind(cellline_info, newRows)
         
-cellsPresent <- sort(unionList(sensitivity$info$cellid,rnaseq$rnaseq$cellid))
-cellline_info <- cellline_info[cellsPresent,]
+#cellsPresent <- sort(unionList(sensitivity$info$cellid,rnaseq$rnaseq$cellid))
+#cellline_info <- cellline_info[cellsPresent,]
 		 
 standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
 		 
