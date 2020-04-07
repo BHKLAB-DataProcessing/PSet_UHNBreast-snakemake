@@ -489,8 +489,8 @@ standardizeRawDataConcRange <- function(sens.info, sens.raw){
 }
 		 
 #add missing cells to cell_info
-		 
-cellnall <- unionList(rownames(cellline_info),rnaseq$rnaseq$cellid, sensitivity$info$cellid)
+rnaseq_cellid_all <- pData(rnaseq_results[[1]])[,"cellid"]		 
+cellnall <- unionList(rownames(cellline_info),rnaseq_cellid_all, sensitivity$info$cellid)
 newcells <- setdiff(cellnall, rownames(cellline_info))
 newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellline_info))
 
@@ -500,7 +500,7 @@ newRows[,"cellid"] <- newcells
 
 cellline_info <- rbind(cellline_info, newRows)
 
-cellsPresent <- sort(unionList(sensitivity$info$cellid,rnaseq$rnaseq$cellid))
+cellsPresent <- sort(unionList(sensitivity$info$cellid,rnaseq_cellid_all))
 cellline_info <- cellline_info[cellsPresent,]
 
 cellline_info$tissueid <- curationTissue[rownames(cellline_info), "unique.tissueid"]
