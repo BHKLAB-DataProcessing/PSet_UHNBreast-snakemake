@@ -610,10 +610,11 @@ print("filter done")
 UHNBreast2019@sensitivity$profiles[noisy_out$noisy, ] <- NA		 
 		 		 
 		 
-saveRDS(UHNBreast2019,file="/pfs/out/UHN_2019.rds")
+saveRDS(UHNBreast2019,file="/pfs/out/UHNBreast.rds")
 		 
-		 
+dataset <- "UHNBreast"		 
 #output ORCESTRA_ID and Pachyderm commit id
+write.table(dataset, file="/pfs/out/dataset.txt", row.names = F ,quote = F, sep = "\t", col.names = F)
 write.table(ORCESTRA_ID, file="/pfs/out/orcestra_id.txt", row.names = F ,quote = F, sep = "\t", col.names = F)				   
 pach_commit_id <- Sys.getenv("PACH_OUTPUT_COMMIT_ID")
 write.table(pach_commit_id, file="/pfs/out/commit_id.txt", row.names = F ,quote = F, sep = "\t", col.names = F) 
