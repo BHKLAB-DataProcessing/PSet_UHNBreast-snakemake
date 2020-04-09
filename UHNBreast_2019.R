@@ -48,6 +48,8 @@ rownames(curationCell) <- curationCell[ , "unique.cellid"]
 #drug
 
 drug_all <- read.csv(file= "/pfs/downAnnotations/drugs_with_ids.csv", na.strings=c("", " ", "NA"))
+drug_all <- drug_all[ , c("unique.drugid", "UHNBreast.drugid","smiles","inchikey","cid","FDA")]
+rownames(drug_all) <- drug_all[ , "unique.drugid"]
 curationDrug <- drug_all[which(!is.na(drug_all[ , "UHNBreast.drugid"])),]
 curationDrug <- curationDrug[ , c("unique.drugid", "UHNBreast.drugid")]
 rownames(curationDrug) <- curationDrug[ , "unique.drugid"]
@@ -78,8 +80,10 @@ cellline_info$tissueid <- curationTissue$unique.tissueid[match(cellline_info$cel
 #cellline_info[84,"cellid"] <- "DU145"
 
 ###drug info###
-drug_info <- data.frame("drugid"=curationDrug$unique.drugid)
+drug_info <- data.frame("UHNBreast.drugid"=curationDrug$UHNBreast.drugid ,"drugid"=curationDrug$unique.drugid)
 rownames(drug_info) <- drug_info$drugid
+drug_all <- drug_all[rownames(drug_info),]
+drug_info[,c("smiles","inchikey","cid","FDA")] <- drug_all[,c("smiles","inchikey","cid","FDA")]
 
 
 #import recomputed sensitivity
@@ -533,6 +537,9 @@ cellline_info$Metastatic <- metastatic
 	
 curationCell <- curationCell[rownames(cellline_info),]
 
+drug_info <- drug_info[unique(sensitivity$info$drugid),]
+		 
+curationDrug <- curationDrug[rownames(drug_info),]
 		 
 standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
 		 
