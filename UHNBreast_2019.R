@@ -78,8 +78,8 @@ cellline_info$tissueid <- curationTissue$unique.tissueid[match(cellline_info$cel
 #cellline_info[84,"cellid"] <- "DU145"
 
 ###drug info###
-drug_info <- data.frame("unique.drugid"=curationDrug$unique.drugid)
-rownames(drug_info) <- drug_info$unique.drugid
+drug_info <- data.frame("drugid"=curationDrug$unique.drugid)
+rownames(drug_info) <- drug_info$drugid
 
 
 #import recomputed sensitivity
@@ -506,29 +506,29 @@ cellline_info <- cellline_info[cellsPresent,]
 cellline_info$tissueid <- curationTissue[rownames(cellline_info), "unique.tissueid"]
 cellline_info$cellid <- rownames(cellline_info)
 
-colnames(cellline_info)[which(names(cellline_info) == "cellid")] <- "unique.cellid"
+
 #add cellosaurus disease type to cell-info
-disease <- cell_all$Cellosaurus.Disease.Type[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+disease <- cell_all$Cellosaurus.Disease.Type[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$Cellosaurus.Disease.Type <- disease
 	 
 #add cellosaurus assession to cell-info
-assession <- cell_all$Cellosaurus.Accession.id[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+assession <- cell_all$Cellosaurus.Accession.id[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$Cellosaurus.Accession.id <- assession
 		 
 #add pharmacodb id to cell-info
-pdb <- cell_all$PharmacoDB.id[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+pdb <- cell_all$PharmacoDB.id[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$PharmacoDB.id <- pdb
 
 #add study tissue id to cell_info
-study_tissue <- cell_all$unique.tissueid.fromstudies[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+study_tissue <- cell_all$unique.tissueid.fromstudies[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$unique.tissueid.fromstudies <- study_tissue
 		 
 #add study cell-line type to cell_info
-cell_type <- cell_all$CellLine.Type[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+cell_type <- cell_all$CellLine.Type[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$CellLine.Type <- cell_type
 		 
 #add metastatic info to cell_info		 
-metastatic <- cell_all$Metastatic[match(cellline_info$unique.cellid, cell_all$unique.cellid)]
+metastatic <- cell_all$Metastatic[match(cellline_info$cellid, cell_all$unique.cellid)]
 cellline_info$Metastatic <- metastatic	
 	
 curationCell <- curationCell[rownames(cellline_info),]
