@@ -80,7 +80,7 @@ cellline_info$tissueid <- curationTissue$unique.tissueid[match(cellline_info$cel
 #cellline_info[84,"cellid"] <- "DU145"
 
 ###drug info###
-drug_info <- data.frame("UHNBreast.drugid"=curationDrug$UHNBreast.drugid ,"drugid"=curationDrug$unique.drugid)
+drug_info <- data.frame("drugid"=curationDrug$unique.drugid)
 rownames(drug_info) <- drug_info$drugid
 drug_all <- drug_all[rownames(drug_info),]
 drug_info[,c("smiles","inchikey","cid","FDA")] <- drug_all[,c("smiles","inchikey","cid","FDA")]
