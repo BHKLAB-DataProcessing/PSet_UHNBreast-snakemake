@@ -540,6 +540,7 @@ curationCell <- curationCell[rownames(cellline_info),]
 drug_info <- drug_info[unique(sensitivity$info$drugid),]
 		 
 curationDrug <- curationDrug[rownames(drug_info),]
+curationTissue <- curationTissue[rownames(cellline_info),]
 		 
 standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
 		 
