@@ -7,6 +7,9 @@ library(readxl)
 library(openxlsx)
 library(data.table)
 library(reshape2)
+library(Biobase)
+library(CoreGx)
+library(SummarizedExperiment)
 
 myDirPrefix <- "/pfs/"
 args = commandArgs(trailingOnly=TRUE)
@@ -494,7 +497,7 @@ standardizeRawDataConcRange <- function(sens.info, sens.raw){
 		 
 #add missing cells to cell_info
 rnaseq_cellid_all <- pData(rnaseq_results[[1]])[,"cellid"]		 
-cellnall <- unionList(rownames(cellline_info),rnaseq_cellid_all, sensitivity$info$cellid)
+cellnall <- CoreGx::.unionList(rownames(cellline_info),rnaseq_cellid_all, sensitivity$info$cellid)
 newcells <- setdiff(cellnall, rownames(cellline_info))
 newRows <- matrix(NA_character_, nrow=length(newcells), ncol=ncol(cellline_info))
 
@@ -504,7 +507,7 @@ newRows[,"cellid"] <- newcells
 
 cellline_info <- rbind(cellline_info, newRows)
 
-cellsPresent <- sort(unionList(sensitivity$info$cellid,rnaseq_cellid_all))
+cellsPresent <- sort(CoreGx::.unionList(sensitivity$info$cellid,rnaseq_cellid_all))
 cellline_info <- cellline_info[cellsPresent,]
 
 cellline_info$tissueid <- curationTissue[rownames(cellline_info), "unique.tissueid"]
@@ -542,10 +545,52 @@ drug_info <- drug_info[unique(sensitivity$info$drugid),]
 curationDrug <- curationDrug[rownames(drug_info),]
 curationTissue <- curationTissue[rownames(cellline_info),]
 		 
+		 
+.converteSetToSE <- function(eSets) {
+  
+  SEfinal <- lapply(eSets,
+         function(eSet){
+             # Change rownames from probes to EnsemblGeneId for rna data type
+             if (grepl("^rna$", Biobase::annotation(eSet))) {
+               rownames(eSet) <- Biobase::fData(eSet)$EnsemblGeneId
+             }
+             
+             # Build summarized experiment from eSet
+             SE <- SummarizedExperiment::SummarizedExperiment(
+               ## TODO:: Do we want to pass an environment for better memory efficiency?
+               assays=S4Vectors::SimpleList(as.list(Biobase::assayData(eSet))
+               ),
+               # Switch rearrange columns so that IDs are first, probes second
+               rowData=S4Vectors::DataFrame(Biobase::fData(eSet),
+                                            rownames=rownames(Biobase::fData(eSet)) 
+               ),
+               colData=S4Vectors::DataFrame(Biobase::pData(eSet),
+                                            rownames=rownames(Biobase::pData(eSet))
+               ),
+               metadata=list("experimentData" = eSet@experimentData, 
+                             "annotation" = Biobase::annotation(eSet), 
+                             "protocolData" = Biobase::protocolData(eSet)
+               )
+             )
+             ## TODO:: Determine if this can be done in the SE constructor?
+             # Extract names from expression set
+             SummarizedExperiment::assayNames(SE) <- Biobase::assayDataElementNames(eSet)
+             mDataType <- Biobase::annotation(eSet)
+             eSets[[mDataType]] <- SE
+         })
+  #setNames(pSet@molecularProfiles, names(eSets))
+  return(SEfinal)
+}
+		 
+z <- .converteSetToSE(z)		 
+		 
+		 
+		 
+		 
+		 
+		 
 standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
 		 
-
-
 
 UHNBreast2019 <- PharmacoSet(name="UHNBreast", 
                              molecularProfiles = z,
