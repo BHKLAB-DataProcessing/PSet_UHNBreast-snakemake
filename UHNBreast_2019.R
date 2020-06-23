@@ -664,7 +664,7 @@ noisy_out <- filterNoisyCurves2(UHNBreast2019)
 print("filter done")
 UHNBreast2019@sensitivity$profiles[noisy_out$noisy, ] <- NA		 
 		 		 
-		 
+UHNBreast2019@annotation$version <- 2		 
 saveRDS(UHNBreast2019,file="/pfs/out/UHNBreast.rds")
 		 
 dataset <- "UHNBreast"		 
