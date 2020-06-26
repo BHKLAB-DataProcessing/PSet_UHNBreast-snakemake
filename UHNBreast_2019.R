@@ -603,7 +603,7 @@ UHNBreast2019 <- PharmacoSet(name="UHNBreast",
                              curationCell=curationCell, 
                              curationDrug=curationDrug,
                              curationTissue=curationTissue, 
-                             datasetType="sensitivity")
+                             datasetType="both")
 		 
 		 
 #filter noisy curves from PSet (modified function to take into account standardized conc range)
