@@ -361,7 +361,7 @@ summarizeRnaSeq <- function (dir,
               "isoforms.counts"=transcript.count))
 }
 
-rnaseq.sampleinfo <- read.csv("/pfs/downAnnotations/uhn_metadata_new.csv", stringsAsFactors=FALSE, row.names=1)
+rnaseq.sampleinfo <- read.csv("/pfs/downAnnotations/uhn_metadata_new.csv", stringsAsFactors=FALSE, row.names=2)
 rnaseq.sampleinfo[ , "cellid"] <- as.character(matchToIDTable(ids=tolower(gsub(badchars, "",rnaseq.sampleinfo[ , "cell.id"])), tbl=curationCell, column = "Ben_Neel.cellid", returnColumn = "unique.cellid"))
 rnaseq.sampleinfo$cell.line <- rnaseq.sampleinfo$cell.id
 rnaseq.sampleinfo$cell.id <- NULL
