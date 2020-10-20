@@ -499,7 +499,7 @@ z <- .converteSetToSE(z)
 
 		 
 
-UHNBreast2019 <- PharmacoSet(name="UHNBreast", 
+UHNBreast2019 <- PharmacoSet(name="UHNBreast2019", 
                              molecularProfiles = z,
                              cell= cellline_info,
                              drug=drug_info,
