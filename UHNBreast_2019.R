@@ -646,9 +646,9 @@ z <- .converteSetToSE(z)
 		 
 if (length(standardize) > 0){
 
- standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
- sensitivity$info <- standardize$sens.info
- sensitivity$raw <- standardize$sens.raw
+# standardize <- standardizeRawDataConcRange(sens.info = sensitivity$info, sens.raw = sensitivity$raw)
+# sensitivity$info <- standardize$sens.info
+# sensitivity$raw <- standardize$sens.raw
 
 } else {
 print("unfiltered PSet")
