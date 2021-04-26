@@ -681,7 +681,7 @@ print("unfiltered PSet")
 }
 	     
 UHNBreast2019@annotation$version <- 2		 
-saveRDS(UHNBreast2019,file="/pfs/out/UHNBreast2019.rds")
+saveRDS(UHNBreast2019,file="/pfs/out/UHNBreast.rds")
 		 
 dataset <- "UHNBreast"		 
 #output ORCESTRA_ID and Pachyderm commit id
