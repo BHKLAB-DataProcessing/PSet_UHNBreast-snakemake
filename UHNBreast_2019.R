@@ -884,7 +884,7 @@ pipeline_output <- data.frame(
     "/pfs/downAnnotations/cell_annotation_all.csv",
     "/pfs/downAnnotations/drugs_with_ids.csv",
     "/pfs/calculateuhn2019raw/UHNRecomputed_2019.RData",
-    "/pfs/out/GRAY.rds"
+    "/pfs/out/UHNBreast.rds"
   ),
   "access_time" = c(times_rnaseq,created,created,created,created),
   stringsAsFactors = FALSE
@@ -1010,7 +1010,7 @@ output_subdomain <- data.frame(
     "/pfs/downAnnotations/cell_annotation_all.csv",
     "/pfs/downAnnotations/drugs_with_ids.csv",
     "/pfs/calculateuhn2019raw/UHNRecomputed_2019.RData",
-    "/pfs/out/GRAY.rds"
+    "/pfs/out/UHNBreast.rds"
   ),
   "access_time" = c(times_rnaseq,created,created,created,created),
   stringsAsFactors = FALSE
