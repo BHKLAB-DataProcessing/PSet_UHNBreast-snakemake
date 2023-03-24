@@ -1,15 +1,17 @@
 from os import path
 from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
-# S3 = S3RemoteProvider(
-#     access_key_id=config["key"],
-#     secret_access_key=config["secret"],
-#     host=config["host"],
-#     stay_on_remote=False
-# )
+S3 = S3RemoteProvider(
+    access_key_id=config["key"],
+    secret_access_key=config["secret"],
+    host=config["host"],
+    stay_on_remote=False
+)
 
 prefix = config["prefix"]
-rna_tool = 'Kallisto-0.46.1'
-rna_ref = 'Gencode_v33'
+rna_tool = config["rna_tool"]
+rna_ref = config["rna_ref"]
+is_filtered = config["filtered"]
+filtered = filtered = 'filtered' if is_filtered is not None and is_filtered == 'True' else ''
 
 rna_tool_dir = rna_tool.replace('-', '_')
 rnaseq_dir = path.join(prefix, "processed",
@@ -18,24 +20,24 @@ rna_ref_file = rna_ref.replace('_', '.') + '.annotation.RData'
 
 rule get_pset:
     input:
-        prefix + "download/drugs_with_ids.csv",
-        prefix + "download/cell_annotation_all.csv",
-        prefix + "download/UHN_recomputed.RData",
-        prefix + "download/" + rna_tool_dir + '.tar.gz'
+        S3.remote(prefix + "download/drugs_with_ids.csv"),
+        S3.remote(prefix + "download/cell_annotation_all.csv"),
+        S3.remote(prefix + "download/UHN_recomputed.RData"),
+        S3.remote(prefix + "download/" + rna_tool_dir + '.tar.gz')
     output:
         prefix + "UHNBreast.rds"
     shell:
         """
-        Rscript {prefix}scripts/UHNBreast_2019.R {prefix} {rna_tool} {rna_ref}
+        Rscript {prefix}scripts/UHNBreast_2019.R {prefix} {rna_tool} {rna_ref} {filtered}
         """
 
 rule download_annotation:
     output:
-        prefix + "download/drugs_with_ids.csv",
-        prefix + "download/cell_annotation_all.csv",
-        prefix + 'download/bc_cellines_neel_subtypes.csv',
-        prefix + 'download/' + rna_ref_file,
-        prefix + 'download/uhn_metadata_new.csv'
+        S3.remote(prefix + "download/drugs_with_ids.csv"),
+        S3.remote(prefix + "download/cell_annotation_all.csv"),
+        S3.remote(prefix + 'download/bc_cellines_neel_subtypes.csv'),
+        S3.remote(prefix + 'download/' + rna_ref_file),
+        S3.remote(prefix + 'download/uhn_metadata_new.csv')
     shell:
         """
         wget 'https://github.com/BHKLAB-DataProcessing/Annotations/raw/master/drugs_with_ids.csv' \
@@ -52,8 +54,8 @@ rule download_annotation:
 
 rule download_data:
     output:
-        prefix + "download/UHN_recomputed.RData",
-        prefix + "download/" + rna_tool_dir + '.tar.gz'
+        S3.remote(prefix + "download/UHN_recomputed.RData"),
+        S3.remote(prefix + "download/" + rna_tool_dir + '.tar.gz')
     shell:
         """
         Rscript {prefix}scripts/download_data.R {prefix} {rna_tool_dir}.tar.gz
