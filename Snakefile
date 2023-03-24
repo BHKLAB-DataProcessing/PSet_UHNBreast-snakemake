@@ -8,6 +8,7 @@ S3 = S3RemoteProvider(
 )
 
 prefix = config["prefix"]
+filename = config["filename"]
 rna_tool = config["rna_tool"]
 rna_ref = config["rna_ref"]
 is_filtered = config["filtered"]
@@ -25,7 +26,7 @@ rule get_pset:
         S3.remote(prefix + "download/UHN_recomputed.RData"),
         S3.remote(prefix + "download/" + rna_tool_dir + '.tar.gz')
     output:
-        prefix + "UHNBreast.rds"
+        S3.remote(prefix + filename)
     shell:
         """
         Rscript {prefix}scripts/UHNBreast_2019.R {prefix} {rna_tool} {rna_ref} {filtered}
