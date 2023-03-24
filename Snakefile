@@ -12,7 +12,7 @@ filename = config["filename"]
 rna_tool = config["rna_tool"]
 rna_ref = config["rna_ref"]
 is_filtered = config["filtered"]
-filtered = filtered = 'filtered' if is_filtered is not None and is_filtered == 'True' else ''
+filtered = 'filtered' if is_filtered is not None and is_filtered == 'filtered' else ''
 
 rna_tool_dir = rna_tool.replace('-', '_')
 rnaseq_dir = path.join(prefix, "processed",
@@ -29,7 +29,7 @@ rule get_pset:
         S3.remote(prefix + filename)
     shell:
         """
-        Rscript {prefix}scripts/UHNBreast_2019.R {prefix} {rna_tool} {rna_ref} {filtered}
+        Rscript scripts/UHNBreast_2019.R {prefix} {filename} {rna_tool} {rna_ref} {filtered}
         """
 
 rule download_annotation:
@@ -59,5 +59,5 @@ rule download_data:
         S3.remote(prefix + "download/" + rna_tool_dir + '.tar.gz')
     shell:
         """
-        Rscript {prefix}scripts/download_data.R {prefix} {rna_tool_dir}.tar.gz
+        Rscript scripts/download_data.R {prefix} {rna_tool_dir}.tar.gz
         """

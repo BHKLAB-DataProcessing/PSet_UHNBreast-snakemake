@@ -10,13 +10,15 @@ library(reshape2)
 library(Biobase)
 library(CoreGx)
 library(SummarizedExperiment)
+library(parallel)
 # library(biocompute)
 
 args <- commandArgs(trailingOnly = TRUE)
-input_dir <- paste0(args[1], "download")
-output_dir <- args[1]
-tools <- args[2]
-transcriptome <- args[3]
+input_dir <- paste0(args[[1]], "download")
+output_dir <- args[[1]]
+filename <- args[[2]]
+tools <- args[[3]]
+transcriptome <- args[[4]]
 
 tools <- gsub("-", "_", tools)
 untar(file.path(input_dir, paste0(tools, ".tar.gz")), exdir = file.path(input_dir))
@@ -24,6 +26,8 @@ tool_path <- expand.grid(a = tools, b = transcriptome)
 tool_path <- paste0(tool_path$a, "_", tool_path$b)
 
 print(tool_path)
+
+print(args)
 
 standardize <- args[grep("filtered", args)]
 
@@ -686,7 +690,7 @@ if (length(standardize) > 0) {
 }
 
 UHNBreast2019@annotation$version <- 2
-saveRDS(UHNBreast2019, file = file.path(output_dir, "UHNBreast.rds"))
+saveRDS(UHNBreast2019, file = file.path(output_dir, filename))
 
 # dataset <- "UHNBreast"
 # #output ORCESTRA_ID and Pachyderm commit id
