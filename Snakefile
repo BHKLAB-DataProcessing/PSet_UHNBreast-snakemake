@@ -24,6 +24,8 @@ rule get_pset:
         S3.remote(prefix + "download/drugs_with_ids.csv"),
         S3.remote(prefix + "download/cell_annotation_all.csv"),
         S3.remote(prefix + "download/UHN_recomputed.RData"),
+        S3.remote(prefix + 'download/bc_cellines_neel_subtypes.csv'),
+        S3.remote(prefix + 'download/uhn_metadata_new.csv'),
         S3.remote(prefix + "download/" + rna_tool_dir + '.tar.gz')
     output:
         S3.remote(prefix + filename)
